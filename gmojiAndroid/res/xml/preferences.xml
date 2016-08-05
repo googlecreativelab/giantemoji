@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="GMOJI Settings">
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="Custom webserver url"
+            android:defaultValue="false"/>
+
+        <EditTextPreference
+            android:key="edittext_preference"
+            android:title="URL"
+            android:summary=""
+            android:dialogTitle="Custom webserver address"
+            android:dependency="checkbox_preference" />
+
+        <CheckBoxPreference
+            android:key="mobilevision_preference"
+            android:title="Mobile Vision"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:key="landmark_preference"
+            android:title="Landmark detection"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:key="show_web_preference"
+            android:title="Emoji view"
+            android:defaultValue="true"/>
+
+
+        <EditTextPreference
+            android:key="smoothing_preference"
+            android:title="Landmark Smoothing"
+            android:summary=""
+            android:dialogTitle="Landmark Smoothing (0.0 - 1.0, lower is more smooth)"
+            />
+
+
+
+        <!--<EditTextPreference
+                    android:key="socket_preference"
+                    android:title="Socket.io server"
+                    android:summary=""
+                    android:dialogTitle="Address starting with http:// to the socket server"/>-->
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

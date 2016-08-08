@@ -1,0 +1,85 @@
+@charset "utf-8";
+
+
+
+
+* {
+
+	margin:  0;
+	padding: 0;
+}
+html, body {
+
+	position: fixed;
+	top:      0;
+	left:     0;
+	width:  100%;
+	height: 100%;
+	overflow: hidden;
+}
+body {
+
+	background-color: #FCC21B;
+	color: #6699FF;
+}
+@media screen and ( min-height: 1500px ){
+
+	body {
+		
+		background-color: rgb( 255, 180, 0 );
+	}
+}
+
+
+
+
+canvas {
+
+	position: absolute;
+	top:      0;
+	left:     0;
+	width:  100%;
+	height: 100%;
+}
+#info {
+
+	position: absolute;
+	top:  20px;
+	left: 20px;
+	font-family: "Courier New", Courier, monospace;
+}
+
+
+
+
+#stressed {
+
+	position: absolute;
+	z-index:  0;
+	top:      0;
+	left:     0;
+	width:  100%;
+	height: 100%;
+	opacity:  0;
+	background: -webkit-linear-gradient( bottom, #FBC21E 48%, #ECC040 54%, #C7BA7A 68%, #83B1BC 89%, #48ACE1 100% );
+	background-repeat: no-repeat;
+	transition-property: opacity;
+	transition-duration: 2s;
+}
+@media screen and ( min-height: 1500px ){
+	
+	#stressed {
+
+		background: -webkit-linear-gradient( bottom, rgb( 255, 180, 0 ) 48%, #ECC040 54%, #C7BA7A 68%, #83B1BC 89%, #48ACE1 100% );
+		height: 70%;
+	}
+}
+#stressed.active {
+
+	opacity: 1;
+	transition-property: opacity;
+	transition-duration: 2s;
+}
+
+
+

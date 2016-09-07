@@ -1,4 +1,7 @@
+
 # Giant Emoji
+[![axp](https://www.androidexperiments.com/assets/img/axpbadge.svg)](https://www.androidexperiments.com/experiment/giant-emoji)
+
 ![preview](animation.gif)
 
 Giant Emoji is an experimental [openFrameworks](http://openframeworks.cc/) application that translates your facial expressions into a giant emoji. It was created over a three week sprint and debuted at [Google I/O 2016](https://events.google.com/io2016/). We thought it might be fun for an attendee to turn their face into an emoji. So, we set out to figure out how to make that happen. This is the result.

@@ -344,7 +344,7 @@ ofPolyline ofApp::consecutiveLandmarksPolyline(int start, int end, bool close) {
     int n = end - start;
     ofPolyline l;
     for(int i = 0; i < n; i++) {
-        l.addVertex(landmarksInternal[start + i]);
+        l.addVertex(glm::vec3(landmarksInternal[start + i], 0));
     }
     if(close) l.close();
     return l;

@@ -5,13 +5,13 @@
     <item
         android:id="@+id/menu_settings"
         android:orderInCategory="100"
-        app:showAsAction="always"
+        android:showAsAction="always"
         android:title="@string/menu_settings"
         />
     <item
         android:id="@+id/menu_reload"
         android:orderInCategory="100"
-        app:showAsAction="always"
+        android:showAsAction="always"
         android:title="Reload browser"
         />
 

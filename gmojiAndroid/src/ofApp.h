@@ -45,8 +45,8 @@ public:
 
 	LandmarkTracker tracker;
 
-	vector< ofVec2f> landmarks;
-	vector< ofVec2f> landmarksInternal;
+	vector< glm::vec2> landmarks;
+	vector< glm::vec2> landmarksInternal;
 
 	vector<ofxBiquadFilter2f> mouth;
 

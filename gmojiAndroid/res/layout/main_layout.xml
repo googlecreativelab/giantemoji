@@ -6,11 +6,10 @@
     android:orientation="horizontal">
 
 
-    <cc.openframeworks.OFGLSurfaceView android:id="@+id/of_gl_surface"
+    <RelativeLayout android:id= "@+id/of_gl_surface_container"
         android:layout_width="0dip"
         android:layout_weight=".5"
         android:layout_height="fill_parent"/>
-    <!-- add here other views' layouts -->
 
 
     <WebView

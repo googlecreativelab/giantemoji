@@ -71,9 +71,23 @@ model {
                     srcDirs = [ "srcJava" ]
                 }
             }
-//            aidl.source.srcDirs = ['srcJava']
-//            renderscript.source.srcDirs = ['srcJava']
-//            res.source.srcDirs = ['res']
+            resources{
+                source{
+                    srcDirs = ['srcJava']
+                }
+            }
+
+            aidl{
+                source{
+                    srcDirs = ['srcJava']
+                }
+            }
+            renderscript{
+                source{
+                    srcDirs = ['srcJava']
+                }
+            }
+
             jniLibs {
                 source {
                     srcDirs = ['libs']

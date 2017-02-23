@@ -16,7 +16,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+	ofSetLogLevel(OF_LOG_VERBOSE);
     // Use frontal facing camera
 	grabber.setDeviceID(1);
 	grabber.setPixelFormat(OF_PIXELS_MONO);
@@ -45,7 +45,8 @@ void ofApp::setup(){
 	font.load("RobotoMono-Regular.ttf",24);
 
 	for(int i=1;i<6;i++){
-		statImages[i-1].load("icons_01-0"+ofToString(i)+".png");
+		std::filesystem::path foo = std::filesystem::path("icons_01-0"+ofToString(i)+".png");
+		statImages[i-1].load(foo);
 	}
     positionFaceImage.load("positionFace.png");
 
@@ -87,7 +88,7 @@ void ofApp::update(){
 		if(useMobileVision) {
 			vision.update(grabber.getPixels());
 			if(vision.getFaces().size() > 0){
-				auto face = vision.getFaces()[0];
+				ofxAndroidMobileVisionFace face = vision.getFaces()[0];
 				smileProbability = face.smileProbability;
 				leftEyeOpenProbability = face.leftEyeOpenProbability;
 				rightEyeOpenProbability = face.rightEyeOpenProbability;
@@ -103,7 +104,7 @@ void ofApp::update(){
 		landmarksInternal = tracker.getLandmarksProcessedInternal();
 
 		// Calculate orientation of face (not really used)
-		ofVec3f orientation = ofVec3f() * tracker.getMatrix() - (ofVec3f(0,0,1) * tracker.getMatrix());
+		glm::vec3 orientation = 	toGlm(ofVec3f() * tracker.getMatrix() - (	ofVec3f (0,0,1) * tracker.getMatrix()));
 
         // Construct script
 		string script = "";
@@ -165,7 +166,7 @@ void ofApp::draw() {
 		// Prepare location and rotation of camera view (counter rotate for the cameras orientation)
 		int o = (appOrientation + cameraOrientation) % 360;
         ofTranslate(w * 0.5f, h * 0.5f);
-		ofRotate(-o);
+		ofRotateDeg(-o);
 
 		if (o != 0) {
 			vaspect = 1.0f / vaspect;

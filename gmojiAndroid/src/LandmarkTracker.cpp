@@ -188,40 +188,40 @@ void LandmarkTracker::threadedFunction() {
 // Function that generates a sample for the SVM classification based on a list of predefined landmarks
 sample_type LandmarkTracker::makeSample(){
 
-//    auto outer = tracker.getInstances()[0].getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::OUTER_MOUTH);
-//    auto inner = tracker.getInstances()[0].getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::INNER_MOUTH);
-//
-//    auto lEye = tracker.getInstances()[0].getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::LEFT_EYE);
-//    auto rEye = tracker.getInstances()[0].getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::RIGHT_EYE);
-//
-//    ofVec2f vec = rEye.getCentroid2D() - lEye.getCentroid2D();
-//    float rot = vec.angle(ofVec2f(1,0));
-//
-//    vector<ofVec2f> relativeMouthPoints;
-//
-//    ofVec2f centroid = outer.getCentroid2D();
-//    for(ofVec2f p : outer.getVertices()){
-//        p -= centroid;
-//        p.rotate(rot);
-//        p /= vec.length();
-//
-//        relativeMouthPoints.push_back(p);
-//    }
-//
-//    for(ofVec2f p : inner.getVertices()){
-//        p -= centroid;
-//        p.rotate(rot);
-//        p /= vec.length();
-//
-//        relativeMouthPoints.push_back(toGlm(p));
-//    }
-//
-//    sample_type s;
-//    for(int i=0;i<20;i++){
-//        s(i*2+0) = relativeMouthPoints[i].x;
-//        s(i*2+1) = relativeMouthPoints[i].y;
-//    }
-//    return s;
+    auto outer = tracker.getInstances()[0].getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::OUTER_MOUTH);
+    auto inner = tracker.getInstances()[0].getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::INNER_MOUTH);
+
+    auto lEye = tracker.getInstances()[0].getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::LEFT_EYE);
+    auto rEye = tracker.getInstances()[0].getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::RIGHT_EYE);
+
+    ofVec2f vec = rEye.getCentroid2D() - lEye.getCentroid2D();
+    float rot = vec.angle(ofVec2f(1,0));
+
+    vector<ofVec2f> relativeMouthPoints;
+
+    ofVec2f centroid = outer.getCentroid2D();
+    for(ofVec2f p : outer.getVertices()){
+        p -= centroid;
+        p.rotate(rot);
+        p /= vec.length();
+
+        relativeMouthPoints.push_back(p);
+    }
+
+    for(ofVec2f p : inner.getVertices()){
+        p -= centroid;
+        p.rotate(rot);
+        p /= vec.length();
+
+        relativeMouthPoints.push_back(toGlm(p));
+    }
+
+    sample_type s;
+    for(int i=0;i<20;i++){
+        s(i*2+0) = relativeMouthPoints[i].x;
+        s(i*2+1) = relativeMouthPoints[i].y;
+    }
+    return s;
 }
 
 

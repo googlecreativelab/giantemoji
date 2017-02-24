@@ -16,7 +16,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	ofSetLogLevel(OF_LOG_VERBOSE);
+//	ofSetLogLevel(OF_LOG_VERBOSE)
     // Use frontal facing camera
 	grabber.setDeviceID(1);
 	grabber.setPixelFormat(OF_PIXELS_MONO);
@@ -25,11 +25,7 @@ void ofApp::setup(){
     // Receive orientation of camera on device
     cameraOrientation = ((ofxAndroidVideoGrabber*)grabber.getGrabber().get())->getCameraOrientation();
 
-    // Setup mobile vision
-    vision.setup();
 
-    // Setup LandmarkTracker instance
-	tracker.setup();
 
     // Setup (ofxBiquadFilter) filters
 	smileTooltip.setFc(0.02);
@@ -56,8 +52,12 @@ void ofApp::setup(){
 	loadingVideo.setLoopState(OF_LOOP_NONE);
     loadingVideo.play();
 
-    // Load settings Java settings pane
-    updateSettings();
+	// Setup mobile vision
+	vision.setup();
+	tracker.setup();
+
+
+	updateSettings();
 }
 
 
@@ -80,7 +80,6 @@ void ofApp::update(){
         // Calculate the face orientation relative to camera orientation
 		int o = (appOrientation+cameraOrientation)%360;
 		tracker.setFaceRotation(o);
-
         // Let the tracker run on the new pixels (will happen in the background)
 		tracker.analyze(grabber.getPixels());
 
@@ -102,9 +101,8 @@ void ofApp::update(){
 		// Receive new data
 		landmarks = tracker.getLandmarksProcessed();
 		landmarksInternal = tracker.getLandmarksProcessedInternal();
-
 		// Calculate orientation of face (not really used)
-		glm::vec3 orientation = 	toGlm(ofVec3f() * tracker.getMatrix() - (	ofVec3f (0,0,1) * tracker.getMatrix()));
+		ofVec3f orientation = 	ofVec3f() * toOf(tracker.getMatrix()) - (ofVec3f (0,0,1) * toOf(tracker.getMatrix()));
 
         // Construct script
 		string script = "";
@@ -127,7 +125,6 @@ void ofApp::update(){
 			}
 		}
 		script += "]});";
-
         // Evaluate the script in the webview
 		evalJs(script);
 	}
@@ -329,7 +326,6 @@ void ofApp::evalJs(string js){
     jobject activity = ofGetOFActivityObject();
     jclass activityClass = threadEnv->FindClass("cc/openframeworks/gmoji/GmojiActivity");
     jmethodID ev = threadEnv->GetMethodID(activityClass,"evalJs","(Ljava/lang/String;)V");
-
     jstring jStringParam = threadEnv->NewStringUTF(js.c_str());
     threadEnv->CallVoidMethod(activity,ev, jStringParam);
     threadEnv->DeleteLocalRef(jStringParam);
@@ -371,6 +367,7 @@ ofRectangle ofApp::drawableRectangleWithin(ofRectangle rect, ofBaseDraws & drawa
 //--------------------------------------------------------------
 // Get values from settings
 void ofApp::updateSettings(){
+
 	JNIEnv * threadEnv = ofGetJNIEnv();
 
 	jobject activity = ofGetOFActivityObject();//threadEnv->GetStaticObjectField(OFAndroid,ofActivityID);
@@ -378,6 +375,9 @@ void ofApp::updateSettings(){
 	useMobileVision = threadEnv->CallBooleanMethod(activity,threadEnv->GetMethodID(activityClass,"useMobileVision","()Z"));
 	float s = threadEnv->CallFloatMethod(activity,threadEnv->GetMethodID(activityClass,"getSmoothingPreference","()F"));
 	tracker.setSmoothing(s);
+
+
+
 }
 
 void ofApp::deviceOrientationChanged(ofOrientation newOrientation){

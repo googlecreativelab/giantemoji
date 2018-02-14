@@ -24,7 +24,6 @@ apply plugin: 'com.android.model.application'
 
 model {
     android {
-        // openFrameworks currently only supports compiling against SDK 19
         compileSdkVersion = 22
         buildToolsVersion = "25.0.3"
 

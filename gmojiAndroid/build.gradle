@@ -4,15 +4,16 @@ def ofRoot(){ return '../../../' }
 apply from: ofRoot()+"libs/openFrameworksCompiled/project/android/common-functions.gradle"
 
 buildscript {
+    apply from: "../../../libs/openFrameworksCompiled/project/android/ndk-verify.gradle"
+
     repositories {
         jcenter()
     }
     dependencies {
         // Using the gradle-experimental version that supports c++
-        classpath 'com.android.tools.build:gradle-experimental:0.8.3'
+        classpath 'com.android.tools.build:gradle-experimental:0.9.3'
     }
 }
-
 allprojects {
     repositories {
         jcenter()
@@ -24,8 +25,8 @@ apply plugin: 'com.android.model.application'
 model {
     android {
         // openFrameworks currently only supports compiling against SDK 19
-        compileSdkVersion = 19
-        buildToolsVersion = "25.0.2"
+        compileSdkVersion = 22
+        buildToolsVersion = "25.0.3"
 
         defaultConfig.with {
             minSdkVersion.apiLevel 19
@@ -125,6 +126,7 @@ model {
 
                     cppFlags.addAll(coreCppFlags(abi, ofRoot()))
                     cppFlags.addAll(addonCppFlags(abi, ofRoot()))
+                    cppFlags.add("-O2")
 
                     ldLibs.addAll(coreLdLibs(abi, ofRoot()))
                     ldLibs.addAll(addonLdLibs(abi, ofRoot()))

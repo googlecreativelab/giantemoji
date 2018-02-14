@@ -16,7 +16,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+//	ofSetLogLevel(OF_LOG_VERBOSE)
     // Use frontal facing camera
 	grabber.setDeviceID(1);
 	grabber.setPixelFormat(OF_PIXELS_MONO);
@@ -25,11 +25,7 @@ void ofApp::setup(){
     // Receive orientation of camera on device
     cameraOrientation = ((ofxAndroidVideoGrabber*)grabber.getGrabber().get())->getCameraOrientation();
 
-    // Setup mobile vision
-    vision.setup();
 
-    // Setup LandmarkTracker instance
-	tracker.setup();
 
     // Setup (ofxBiquadFilter) filters
 	smileTooltip.setFc(0.02);
@@ -45,7 +41,8 @@ void ofApp::setup(){
 	font.load("RobotoMono-Regular.ttf",24);
 
 	for(int i=1;i<6;i++){
-		statImages[i-1].load("icons_01-0"+ofToString(i)+".png");
+		std::filesystem::path foo = std::filesystem::path("icons_01-0"+ofToString(i)+".png");
+		statImages[i-1].load(foo);
 	}
     positionFaceImage.load("positionFace.png");
 
@@ -55,8 +52,12 @@ void ofApp::setup(){
 	loadingVideo.setLoopState(OF_LOOP_NONE);
     loadingVideo.play();
 
-    // Load settings Java settings pane
-    updateSettings();
+	// Setup mobile vision
+	vision.setup();
+	tracker.setup();
+
+
+	updateSettings();
 }
 
 
@@ -79,7 +80,6 @@ void ofApp::update(){
         // Calculate the face orientation relative to camera orientation
 		int o = (appOrientation+cameraOrientation)%360;
 		tracker.setFaceRotation(o);
-
         // Let the tracker run on the new pixels (will happen in the background)
 		tracker.analyze(grabber.getPixels());
 
@@ -87,7 +87,7 @@ void ofApp::update(){
 		if(useMobileVision) {
 			vision.update(grabber.getPixels());
 			if(vision.getFaces().size() > 0){
-				auto face = vision.getFaces()[0];
+				ofxAndroidMobileVisionFace face = vision.getFaces()[0];
 				smileProbability = face.smileProbability;
 				leftEyeOpenProbability = face.leftEyeOpenProbability;
 				rightEyeOpenProbability = face.rightEyeOpenProbability;
@@ -101,9 +101,8 @@ void ofApp::update(){
 		// Receive new data
 		landmarks = tracker.getLandmarksProcessed();
 		landmarksInternal = tracker.getLandmarksProcessedInternal();
-
 		// Calculate orientation of face (not really used)
-		ofVec3f orientation = ofVec3f() * tracker.getMatrix() - (ofVec3f(0,0,1) * tracker.getMatrix());
+		ofVec3f orientation = 	ofVec3f() * toOf(tracker.getMatrix()) - (ofVec3f (0,0,1) * toOf(tracker.getMatrix()));
 
         // Construct script
 		string script = "";
@@ -126,7 +125,6 @@ void ofApp::update(){
 			}
 		}
 		script += "]});";
-
         // Evaluate the script in the webview
 		evalJs(script);
 	}
@@ -165,7 +163,7 @@ void ofApp::draw() {
 		// Prepare location and rotation of camera view (counter rotate for the cameras orientation)
 		int o = (appOrientation + cameraOrientation) % 360;
         ofTranslate(w * 0.5f, h * 0.5f);
-		ofRotate(-o);
+		ofRotateDeg(-o);
 
 		if (o != 0) {
 			vaspect = 1.0f / vaspect;
@@ -328,7 +326,6 @@ void ofApp::evalJs(string js){
     jobject activity = ofGetOFActivityObject();
     jclass activityClass = threadEnv->FindClass("cc/openframeworks/gmoji/GmojiActivity");
     jmethodID ev = threadEnv->GetMethodID(activityClass,"evalJs","(Ljava/lang/String;)V");
-
     jstring jStringParam = threadEnv->NewStringUTF(js.c_str());
     threadEnv->CallVoidMethod(activity,ev, jStringParam);
     threadEnv->DeleteLocalRef(jStringParam);
@@ -344,7 +341,7 @@ ofPolyline ofApp::consecutiveLandmarksPolyline(int start, int end, bool close) {
     int n = end - start;
     ofPolyline l;
     for(int i = 0; i < n; i++) {
-        l.addVertex(landmarksInternal[start + i]);
+        l.addVertex(glm::vec3(landmarksInternal[start + i], 0));
     }
     if(close) l.close();
     return l;
@@ -370,6 +367,7 @@ ofRectangle ofApp::drawableRectangleWithin(ofRectangle rect, ofBaseDraws & drawa
 //--------------------------------------------------------------
 // Get values from settings
 void ofApp::updateSettings(){
+
 	JNIEnv * threadEnv = ofGetJNIEnv();
 
 	jobject activity = ofGetOFActivityObject();//threadEnv->GetStaticObjectField(OFAndroid,ofActivityID);
@@ -377,6 +375,9 @@ void ofApp::updateSettings(){
 	useMobileVision = threadEnv->CallBooleanMethod(activity,threadEnv->GetMethodID(activityClass,"useMobileVision","()Z"));
 	float s = threadEnv->CallFloatMethod(activity,threadEnv->GetMethodID(activityClass,"getSmoothingPreference","()F"));
 	tracker.setSmoothing(s);
+
+
+
 }
 
 void ofApp::deviceOrientationChanged(ofOrientation newOrientation){

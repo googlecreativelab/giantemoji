@@ -101,7 +101,7 @@ public class GmojiActivity extends cc.openframeworks.OFActivity{
 
 		// Make sure device doesnt sleep
 		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-		wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "GMOJI");
+		wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "GMOJI");
 		wl.acquire();
 
 		// Get shared preferences

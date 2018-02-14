@@ -25,10 +25,10 @@
 #include "ofxBiquadFilter.h"
 
 struct AnalyzeResult {
-    vector<ofVec2f> landmarks;
-    vector<ofVec2f> landmarksProcessed;
-    vector<ofVec2f> landmarksProcessedInternal;
-    ofMatrix4x4 matrix;
+    vector<glm::vec2> landmarks;
+    vector<glm::vec2> landmarksProcessed;
+    vector<glm::vec2> landmarksProcessedInternal;
+    glm::mat4 matrix;
     double smile, big_smile, neutral, o;
 };
 
@@ -52,9 +52,9 @@ public:
     void analyze(ofPixels & pixels);
     bool update();
 
-    vector<ofVec2f> getLandmarksProcessed();
-    vector<ofVec2f> getLandmarksProcessedInternal();
-    ofMatrix4x4 getMatrix();
+    vector<glm::vec2> getLandmarksProcessed();
+    vector<glm::vec2> getLandmarksProcessedInternal();
+    glm::mat4 getMatrix();
 
     float getSmile();
     float getBigSmile();
@@ -95,7 +95,7 @@ private:
 
     vector<pfunct_type> learned_functions;
 
-    ofMatrix4x4 lastMatrix;
+    glm::mat4 lastMatrix;
 
 };
 

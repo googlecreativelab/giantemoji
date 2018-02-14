@@ -213,7 +213,7 @@ sample_type LandmarkTracker::makeSample(){
         p.rotate(rot);
         p /= vec.length();
 
-        relativeMouthPoints.push_back(p);
+        relativeMouthPoints.push_back(toGlm(p));
     }
 
     sample_type s;
@@ -236,13 +236,13 @@ bool LandmarkTracker::update() {
     return newFrame;
 }
 
-vector<ofVec2f> LandmarkTracker::getLandmarksProcessed(){
-    vector<ofVec2f> copy(analyzeResult.landmarksProcessed);
+vector<glm::vec2> LandmarkTracker::getLandmarksProcessed(){
+    vector<glm::vec2> copy(analyzeResult.landmarksProcessed);
     return copy;
 }
 
-vector<ofVec2f> LandmarkTracker::getLandmarksProcessedInternal(){
-    vector<ofVec2f> copy(analyzeResult.landmarksProcessedInternal);
+vector<glm::vec2> LandmarkTracker::getLandmarksProcessedInternal(){
+    vector<glm::vec2> copy(analyzeResult.landmarksProcessedInternal);
     return copy;
 }
 
@@ -259,6 +259,6 @@ float LandmarkTracker::getO(){
     return analyzeResult.o;
 }
 
-ofMatrix4x4 LandmarkTracker::getMatrix(){
+glm::mat4 LandmarkTracker::getMatrix(){
     return analyzeResult.matrix;
 }

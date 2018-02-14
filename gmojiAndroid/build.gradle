@@ -1,20 +1,19 @@
-
-def ofRoot(){ return '../../../../' }
+def ofRoot(){ return '../../../' }
 
 // Load common functions
 apply from: ofRoot()+"libs/openFrameworksCompiled/project/android/common-functions.gradle"
 
-
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    apply from: "../../../libs/openFrameworksCompiled/project/android/ndk-verify.gradle"
+
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle-experimental:0.7.0'
+        // Using the gradle-experimental version that supports c++
+        classpath 'com.android.tools.build:gradle-experimental:0.9.3'
     }
 }
-
 allprojects {
     repositories {
         jcenter()
@@ -22,16 +21,17 @@ allprojects {
 }
 
 apply plugin: 'com.android.model.application'
+
 model {
     android {
-        compileSdkVersion = 19
-        buildToolsVersion = "23.0.3"
+        compileSdkVersion = 22
+        buildToolsVersion = "25.0.3"
 
         defaultConfig.with {
-            minSdkVersion.apiLevel    = 19
-            targetSdkVersion.apiLevel = 19
-            versionCode     =  1
-            versionName     = "1.0"
+            minSdkVersion.apiLevel 19
+            targetSdkVersion.apiLevel 19
+            versionCode 1
+            versionName "1.0"
         }
     }
 
@@ -43,14 +43,9 @@ model {
 
     android.sources {
         main {
-            manifest.source {
-                srcDir '.'
-                include 'AndroidManifest.xml'
-            }
             jni {
                 source {
                     srcDirs= appSrcDirs(ofRoot())
-
                     includes = srcIncludes(ofRoot())
                     excludes = srcExcludes(ofRoot())
                 }
@@ -61,24 +56,52 @@ model {
                 }
             }
 
-            java.source.srcDirs = ['srcJava']
-            resources.source.srcDirs = ['srcJava']
-            aidl.source.srcDirs = ['srcJava']
-            renderscript.source.srcDirs = ['srcJava']
-            res.source.srcDirs = ['res']
-            jniLibs.source.srcDirs = ['libs']
+            manifest {
+                source {
+                    srcDirs = [ "." ]
+                }
+            }
+            res {
+                source {
+                    srcDirs = [ "res" ]
+                }
+            }
+            java {
+                source {
+                    srcDirs = [ "srcJava" ]
+                }
+            }
+            resources{
+                source{
+                    srcDirs = ['srcJava']
+                }
+            }
 
-            // Add app assets
-            assets.source.srcDirs += 'assets'
+            aidl{
+                source{
+                    srcDirs = ['srcJava']
+                }
+            }
+            renderscript{
+                source{
+                    srcDirs = ['srcJava']
+                }
+            }
 
-            // SVM Model
-            assets.source.srcDirs += 'svmModel'
+            jniLibs {
+                source {
+                    srcDirs = ['libs']
+                }
+            }
 
-            // Add web source
-            assets.source.srcDirs += '../gmojiWeb/src'
-
-            // Add addon data
-            assets.source.srcDirs += addonData(ofRoot())
+            assets {
+                source {
+                    srcDirs = [
+                            'assets',
+                            'svmModel',
+                            '../gmojiWeb/src']+addonData(ofRoot())
+                }
+            }
         }
     }
 
@@ -112,12 +135,6 @@ model {
                 }
             }
         }
-    }
-
-    android.aaptOptions {
-        /// Uncomment this line to ignore the large .dat file used by ofxFaceTracker2
-        /// for faster dev build tie
-        // ignoreAssetsPattern '*.dat'
     }
 }
 

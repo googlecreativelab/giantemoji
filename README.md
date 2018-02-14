@@ -33,7 +33,7 @@ The app is running several processes that are all used to generate the final emo
 - All the data is being lowpass filtered using [ofxBiquadFilter](https://github.com/dzlonline/ofxBiquadFilter)
 
 ### Dependencies
-App was developed in a special fork of openFrameworks with improved Android Studio support available [here](https://github.com/halfdanj/openframeworks/tree/gradle-experimental) (tested in [#1e29e40](https://github.com/HalfdanJ/openFrameworks/commit/1e29e40d05c06b825eb5e75a82cd142c391142f4)). See [this](https://github.com/HalfdanJ/openFrameworks/blob/gradle-experimental/docs/android_studio.md) guide for setup. The fork is meant to eventually be merged into official 0.10.0 release. 
+App was developed with the development branch openFrameworks with improved Android Studio support available [here](https://github.com/openframeworks/openframeworks/tree/master). See [this](https://github.com/openframeworks/openFrameworks/blob/master/docs/android_studio.md) guide for setup. The development branch will eventually be the 0.10.0 release. 
 
 After openFrameworks has been properly setup, the following addons are required. The addons should be installed by cloning into `OF_ROOT/addons`
 

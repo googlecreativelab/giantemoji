@@ -37,7 +37,7 @@ App was developed with the development branch openFrameworks with improved Andro
 
 After openFrameworks has been properly setup, the following addons are required. The addons should be installed by cloning into `OF_ROOT/addons`
 
-  - [ofxCv](https://github.com/kylemcdonald/ofxCv)
+  - [ofxCv](https://github.com/danzeeeman/ofxCv)
   - [ofxFaceTracker2](https://github.com/danzeeeman/ofxfacetracker2) - run `download-model.sh` once installed to download required data model 
   - [ofxAndroidMobileVision](https://github.com/halfdanj/ofxandroidmobilevision)
   - [ofxBiquadFilter](https://github.com/dzlonline/ofxBiquadFilter)
